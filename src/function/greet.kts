@@ -1,6 +1,6 @@
 package function
 
-fun hello() = "hello"
+fun hello(): String = "hello"
 
 println(hello())
 
@@ -17,6 +17,9 @@ fun functionHasParameter(arg: String): String {
 }
 println("parameter function: ${functionHasParameter("Hello")}")
 
+fun notReally() = {2}
+println(notReally())
+println(notReally()())
 
 // 기본 아규먼트
 fun greet(name: String, msg: String = "Hello"): String = "$msg $name"
@@ -29,13 +32,23 @@ println(greet2(msg="abc"))
 
 // 명시적 아규먼트
 fun createItem(name: String, quantity: Int, price: Int, discountRate: Double) {
-    print("name: $name quantity: $quantity price: $price discountRate: $discountRate")
+    println("name: $name quantity: $quantity price: $price discountRate: $discountRate")
 }
-print("명시적 아규먼트")
+println("명시적 아규먼트")
 createItem("Apple", 100, 1000, 0.0)
 createItem(name="Apple", quantity = 100, price=1000, discountRate=0.0)
 createItem("Apple", 100, discountRate = 0.0, price=1000)
 
+//
+fun max1(numbers: IntArray): Int {
+    var maximum = Int.MIN_VALUE
+    for(number in numbers) {
+        maximum = if(number > maximum) number else maximum
+    }
+    return maximum
+}
+println("다중 인자")
+println(max1(intArrayOf(1, 2, 3, 4, 5)))
 // 다중인자
 fun max(vararg numbers: Int): Int {
     var maximum = Int.MIN_VALUE
@@ -46,6 +59,8 @@ fun max(vararg numbers: Int): Int {
 }
 println("다중인자")
 println(max(1, 2, 3, 4, 5))
+println(max(*intArrayOf(1, 2, 3, 4, 5)))
+println(max(*listOf(1,2,3,4,5).toIntArray()))
 
 fun multiParameter(vararg numbers: Int, msg: String): String = "${numbers.toString()} $msg"
 multiParameter(1,2,3, msg="A")
