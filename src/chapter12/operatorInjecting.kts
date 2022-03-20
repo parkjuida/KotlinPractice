@@ -53,3 +53,69 @@ fun double(input: Int): Int {
 
 val incrementalAndDouble = ::incremental.andThen(::double)
 println(incrementalAndDouble(0))
+
+fun toString() = "lexical"
+val doAlso = "context".also { arg -> print("this: ${this.toString()}, arg: $arg, ") }
+println("result $doAlso")
+
+val doApply = "context".apply { print("this: $this ") }
+println("result $doApply")
+
+val doLet = "context".let { arg -> print("this: ${this.toString()}, arg: $arg, ") }
+println("result $doLet")
+
+val doRun = "context".run { print("this: $this ") }
+println("result $doRun")
+
+
+class Computer {
+    var status = "off"
+    var battery = 100
+
+    fun turnOn() {
+        println("turn on")
+        status = "on"
+    }
+
+    fun turnOff() {
+        println("turn off")
+        status = "off"
+    }
+
+    fun doSomthing() {
+        println("doSomthing")
+    }
+
+    fun batteryCharge() {
+        println("battery charge")
+        battery = 100
+    }
+
+    override fun toString(): String {
+        return "status: $status battery: $battery"
+    }
+}
+
+val computer = Computer()
+computer.turnOn()
+computer.doSomthing()
+computer.batteryCharge()
+// 아래로 변형 가능
+computer.apply { turnOn() }.apply{ doSomthing() }.apply { batteryCharge() }
+// 아래로 변형 가
+computer.run {
+    turnOn()
+    doSomthing()
+    batteryCharge()
+}
+
+fun createComputer(): Computer {
+    return Computer()
+}
+
+fun Computer.calculate(): Boolean = true
+
+val calculateResult = createComputer()
+    .let { computer -> computer.calculate() }
+
+println(calculateResult)
